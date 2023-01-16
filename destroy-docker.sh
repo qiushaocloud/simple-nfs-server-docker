@@ -1,1 +1,1 @@
-docker rm -f simple-nfs-server || true
+docker rm -f qiushaocloud-simple-nfs-server || true
