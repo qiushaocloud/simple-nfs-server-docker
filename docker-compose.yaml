@@ -1,0 +1,10 @@
+version: "3"
+services:
+  qiushaocloud-simple-nfs-server:
+    image: qiushaocloud/simple-nfs-server
+    container_name: qiushaocloud-simple-nfs-server
+    hostname: qiushaocloud-simple-nfs-server
+    ports:
+      - "$NFS_PORT:2049"
+    volumes:
+      - $NFS_DIR:/mnt/nfs
