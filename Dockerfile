@@ -1,19 +1,28 @@
-FROM qiushaocloud/ub1604-base:latest
+FROM alpine:latest
 
-RUN apt update \
-	&& apt-get install -y nfs-kernel-server
+ENV ROOT_SHARE_DIR "/nfs_share_root_dirs"
+ENV IS_DOCKER_ENV "yes"
+ENV NFS_IP_WHITE_LIST "all"
+ENV NFS_DIR_LIST ""
+ENV NFS_NEED_CREATE_DIR_LIST ""
 
-COPY ./bootstarp.sh /root/bootstarp.sh
+RUN apk --update --no-cache add bash nfs-utils
 
-RUN chmod 777 /root/bootstarp.sh \
-	&& mkdir /mnt/nfs \
-	&& chmod -R 666 /mnt/nfs \
-	&& chown -R nobody:nogroup /mnt/nfs \
-	&& echo "/mnt/nfs *(rw,sync,no_subtree_check)" >> /etc/exports
+COPY create_nfs_dir.sh /app/create_nfs_dir.sh
+COPY create_nfs_dirs.sh /app/create_nfs_dirs.sh
+COPY create_exports.sh /app/create_exports.sh
+COPY entrypoint.sh /app/entrypoint.sh
+COPY start-nfs.sh /app/start-nfs.sh
 
-WORKDIR /root
+RUN mkdir -p /var/lib/nfs/rpc_pipefs \
+	&& mkdir -p /var/lib/nfs/v4recovery \
+    && echo "rpc_pipefs  /var/lib/nfs/rpc_pipefs  rpc_pipefs  defaults  0  0" >> /etc/fstab \
+    && echo "nfsd        /proc/fs/nfsd            nfsd        defaults  0  0" >> /etc/fstab \
+	&& chmod +x /app/*.sh
 
-VOLUME ["/mnt/nfs"]
+WORKDIR /app
+
 EXPOSE 2049
 
-CMD ["/root/bootstarp.sh"]
+ENTRYPOINT [""]
+CMD ["/app/entrypoint.sh"]

@@ -4,7 +4,14 @@ services:
     image: qiushaocloud/simple-nfs-server
     container_name: qiushaocloud-simple-nfs-server
     hostname: qiushaocloud-simple-nfs-server
+    privileged: true # 必须开启特权
     ports:
-      - "$NFS_PORT:2049"
+      - "2049:2049" # 外部 tcp 访问的端口
+      - "2049:2049/udp" # 外部 udp 访问的端口
     volumes:
-      - $NFS_DIR:/mnt/nfs
+      - /mnt/nfs_share_root_dirs:/nfs_share_root_dirs # 【必选】共享根目录对应的宿主机目录映射【注意： 这个是必须的】
+      # - /mnt/nfs_share01:/nfs_share_root_dirs/mnt/nfs_share01 # 【可选】其它目录映射，docker 里面映射的目录必须在根目录下
+      # - /mnt/nfs_share02:/nfs_share_root_dirs/mnt/nfs_share02 # 【可选】其它目录映射，docker 里面映射的目录必须在根目录下
+    environment:
+      - NFS_IP_WHITE_LIST=all # 【可选】允许访问的白名单, 默认为 all, 以“;”分隔，比如: 10.1..0/16;192.168.2.0/24;192.168.7.22【all表示允许所有，还可以限定网段和固定ip】
+      - NFS_DIR_LIST= # 【可选】其它共享目录，必须在 volumes 中对应映射宿主机目录，默认为空(表示使用根目录共享)， 以“;”分隔，比如: /mnt/nfs_share01;/mnt/nfs_share02【注意：一旦设置了共享目录，那么根目录将只支持读】
