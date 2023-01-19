@@ -23,7 +23,7 @@ fi
 
 if [ ! $NFS_IP_WHITE_LIST ];then
     echo "entrypoint NFS_IP_WHITE_LIST is empty, need allow *"
-    echo "$ROOT_SHARE_DIR_TMP *($root_dir_rwo,fsid=0,sync,no_subtree_check,all_squash)" > /etc/exports
+    echo "$ROOT_SHARE_DIR_TMP *($root_dir_rwo,fsid=0,$NFS_EXPORT_SYNC,no_subtree_check,$NFS_EXPORT_SQUASH)" > /etc/exports
 else
     echo "entrypoint NFS_IP_WHITE_LIST not empty, need allow white list"
     line="$ROOT_SHARE_DIR_TMP"
@@ -33,10 +33,10 @@ else
     do
         if [ $allownfsIp == "all" ];then
             echo "entrypoint allownfsIp is all, need set to *"
-            line="$line *($root_dir_rwo,fsid=0,sync,no_subtree_check,all_squash)"
+            line="$line *($root_dir_rwo,fsid=0,$NFS_EXPORT_SYNC,no_subtree_check,$NFS_EXPORT_SQUASH)"
         else
             echo "entrypoint allownfsIp: $allownfsIp"
-            line="$line $allownfsIp($root_dir_rwo,fsid=0,sync,no_subtree_check,all_squash)"
+            line="$line $allownfsIp($root_dir_rwo,fsid=0,$NFS_EXPORT_SYNC,no_subtree_check,$NFS_EXPORT_SQUASH)"
         fi
     done
 

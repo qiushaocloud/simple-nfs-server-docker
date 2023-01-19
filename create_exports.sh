@@ -34,10 +34,10 @@ do
     do
         if [ $allownfsIp == "all" ];then
             echo "allownfsIp is all, need set to *"
-	        line="$line *(rw,sync,no_subtree_check,all_squash)"
+	        line="$line *(rw,$NFS_EXPORT_SYNC,no_subtree_check,$NFS_EXPORT_SQUASH)"
         else
             echo "allownfsIp: $allownfsIp"
-	        line="$line $allownfsIp(rw,sync,no_subtree_check,all_squash)"
+	        line="$line $allownfsIp(rw,$NFS_EXPORT_SYNC,no_subtree_check,$NFS_EXPORT_SQUASH)"
         fi
     done
 

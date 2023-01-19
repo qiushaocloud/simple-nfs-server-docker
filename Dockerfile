@@ -5,6 +5,8 @@ ENV IS_DOCKER_ENV "yes"
 ENV NFS_IP_WHITE_LIST "all"
 ENV NFS_DIR_LIST ""
 ENV NFS_NEED_CREATE_DIR_LIST ""
+ENV NFS_EXPORT_SYNC "sync"
+ENV NFS_EXPORT_SQUASH "no_root_squash"
 
 RUN apk --update --no-cache add bash nfs-utils
 
