@@ -5,6 +5,7 @@ services:
     container_name: qiushaocloud-simple-nfs-server
     hostname: qiushaocloud-simple-nfs-server
     privileged: true # 必须开启特权
+    restart: always
     ports:
       - "2049:2049" # 外部 tcp 访问的端口
       - "2049:2049/udp" # 外部 udp 访问的端口
