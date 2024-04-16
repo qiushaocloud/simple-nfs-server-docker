@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.14
 
 ENV ROOT_SHARE_DIR "/nfs_share_root_dirs"
 ENV IS_DOCKER_ENV "yes"
